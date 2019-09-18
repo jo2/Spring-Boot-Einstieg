@@ -19,22 +19,6 @@ public class BookstoreService {
         addBook(new Book("Book_2", "Author_1", 10.0, 2017));
         addBook(new Book("Book_3", "Author_1", 15.0, 2018));
         addBook(new Book("Book_4", "Author_2", 20.0, 2019));
-
-        System.out.println("Get all Books");
-        getAllBooks().forEach(System.out::println);
-
-        removeBook("Book_1");
-
-        System.out.println("Remove Book Book_1");
-        getAllBooks().forEach(System.out::println);
-
-        System.out.println("Get Book Book_2");
-        System.out.println(getBookByTitle("Book_2"));
-
-        updateBook("Book_2", new Book("Book_2", "Author_3", 35.0, 2019));
-
-        System.out.println("Update Book Book_2");
-        getAllBooks().forEach(System.out::println);
     }
 
     public Book addBook(Book book) {
