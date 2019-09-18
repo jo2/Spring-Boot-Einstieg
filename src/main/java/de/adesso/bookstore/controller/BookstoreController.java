@@ -45,9 +45,9 @@ public class BookstoreController {
         return bookstoreService.addBook(book);
     }
 
-    @PutMapping("/books")
-    public Book updateBook(@RequestBody Book book) {
-        return bookstoreService.updateBook(book);
+    @PutMapping("/books/{id}")
+    public Book updateBook(@PathVariable(name = "id") Long id, @RequestBody Book book) {
+        return bookstoreService.updateBook(id, book);
     }
 
     @DeleteMapping("/books/{id}")

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Bookstore - Info</title>
+    <link href="/css/bootstrap.min.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="container">
+    <h3 th:text="'Book: ' + ${book.title}"></h3>
+    <p th:text="'Author: ' + ${book.author}"></p>
+    <p th:text="'Year: ' + ${book.year}"></p>
+    <p th:text="'Price: ' + ${book.price}"></p>
+    <div class="form-group">
+        <label class="col-md-4 control-label"></label>
+        <div class="col-md-8">
+            <a th:href="@{'/books/' + ${book.id} + '/edit'}" class="btn btn-info">Edit</a>
+            <form th:method="delete" th:action="@{'/books/delete/' + ${book.id}}" style="display: inline">
+                <button type="submit" class="btn btn-danger">Delete</button>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

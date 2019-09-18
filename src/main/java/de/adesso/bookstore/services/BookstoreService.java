@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class BookstoreService {
@@ -22,8 +23,17 @@ public class BookstoreService {
         return bookRepository.save(book);
     }
 
-    public Book updateBook(Book book) {
-        return bookRepository.save(book);
+    public Book updateBook(Long id, Book book) {
+        Optional<Book> optionalBook = bookRepository.findById(id);
+        if (optionalBook.isPresent()) {
+            Book b = optionalBook.get();
+            b.setTitle(book.getTitle());
+            b.setAuthor(book.getAuthor());
+            b.setPrice(book.getPrice());
+            b.setYear(book.getYear());
+            return bookRepository.save(b);
+        }
+        return null;
     }
 
     public Book getBookByTitle(String title) {

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Bookstore - Create Book</title>
+    <link href="/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="/css/style.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="container">
+    <form class="form-horizontal needs-validation" method="post" th:object="${book}" th:action="@{/books/create}">
+        <input type="hidden" th:field="*{id}" th:value="${book.id}">
+        <fieldset>
+            <div>
+                <legend>Create new Book</legend>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-8">
+                    <label for="title">Title</label>
+                    <input id="title" th:field="*{title}" type="text" placeholder="Title" class="form-control input-md" required="">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-8">
+                    <label for="author">Author</label>
+                    <input id="author" th:field="*{author}" type="text" placeholder="Author" class="form-control input-md" required="">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-8">
+                    <label for="year">Year</label>
+                    <input id="year" th:field="*{year}" type="text" placeholder="Year" class="form-control input-md" required="">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-8">
+                    <label for="price">Price</label>
+                    <input id="price" th:field="*{price}" type="text" placeholder="Price" class="form-control input-md" required="">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-8">
+                    <button type="submit" class="btn btn-success">Confirm</button>
+                    <button type="reset" class="btn btn-danger">Cancel</button>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+</div>
+</body>
+</html>
