@@ -9,15 +9,22 @@
 <body>
 <div class="container">
     <form class="form-horizontal" method="post" th:object="${book}" th:action="@{'/books/update/' + ${book.id}}">
+        <input type="hidden" th:field="*{id}" th:value="${book.id}">
         <fieldset>
             <div>
                 <legend th:text="'Edit ' + ${book.title}"></legend>
+            </div>
+
+            <div class="alert alert-danger" th:if="${#fields.hasErrors('*')}">
+                <p th:each="err : ${#fields.errors('*')}" th:text="${err}"></p>
             </div>
 
             <div class="form-group">
                 <div class="col-md-8">
                     <label for="title">Title</label>
                     <input id="title" th:field="*{title}" type="text" placeholder="Title" class="form-control input-md" required="">
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></div>
+                    <div class="valid-feedback" th:if="${!#fields.hasErrors('title') && book.title != '' && book.title != null}">Looks good!</div>
                 </div>
             </div>
 
@@ -25,6 +32,8 @@
                 <div class="col-md-8">
                     <label for="author">Author</label>
                     <input id="author" th:field="*{author}" type="text" placeholder="Author" class="form-control input-md" required="">
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('author')}" th:errors="*{author}"></div>
+                    <div class="valid-feedback" th:if="${!#fields.hasErrors('author') && book.author != '' && book.author != null}">Looks good!</div>
                 </div>
             </div>
 
@@ -32,6 +41,8 @@
                 <div class="col-md-8">
                     <label for="year">Year</label>
                     <input id="year" th:field="*{year}" type="text" placeholder="Year" class="form-control input-md" required="">
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('year')}" th:errors="*{year}"></div>
+                    <div class="valid-feedback" th:if="${!#fields.hasErrors('year') && book.year != 0 && book.year != null}">Looks good!</div>
                 </div>
             </div>
 
@@ -39,13 +50,15 @@
                 <div class="col-md-8">
                     <label for="price">Price</label>
                     <input id="price" th:field="*{price}" type="text" placeholder="Price" class="form-control input-md" required="">
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></div>
+                    <div class="valid-feedback" th:if="${!#fields.hasErrors('price') && book.price != 0 && book.price != null}">Looks good!</div>
                 </div>
             </div>
 
             <div class="form-group">
                 <div class="col-md-8">
                     <button type="submit" class="btn btn-success">Confirm</button>
-                    <button type="reset" class="btn btn-danger">Cancel</button>
+                    <a class="btn btn-danger" th:href="@{/books}">Cancel</a>
                 </div>
             </div>
         </fieldset>

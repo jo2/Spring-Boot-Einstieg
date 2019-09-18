@@ -4,16 +4,34 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Entity
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"title", "author"}))
 public class Book {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @NotNull
+    @Size(min = 2, max = 30, message = "Title must be at least 2 and at most 30 characters long.")
     private String title;
+
+    @NotNull
+    @Size(min = 2, max = 20, message = "Author must be at least 2 and at most 20 characters long.")
     private String author;
+
+    @Min(value = 1, message = "Price must be at least 1.")
     private double price;
+
+    @Min(value = 1000, message = "Year must be after 1000 AC.")
+    @Max(value = 2019, message = "Year can't be in the future.")
     private int year;
 
     public Book() {
@@ -28,6 +46,10 @@ public class Book {
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getTitle() {

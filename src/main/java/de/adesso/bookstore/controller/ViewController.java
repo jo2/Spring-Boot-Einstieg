@@ -3,13 +3,18 @@ package de.adesso.bookstore.controller;
 import de.adesso.bookstore.entitites.Book;
 import de.adesso.bookstore.services.BookstoreService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+
+import javax.validation.Valid;
 
 @Controller
 public class ViewController {
@@ -46,14 +51,30 @@ public class ViewController {
     }
 
     @PostMapping("/books/create")
-    public String createBook(@ModelAttribute Book book) {
-        bookstoreService.addBook(book);
+    public String createBook(@Valid Book book, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "createBook";
+        }
+        try {
+            bookstoreService.addBook(book);
+        } catch (DataIntegrityViolationException ex) {
+            bindingResult.addError(new ObjectError("title", "Combination of title and author must be unique."));
+            return "createBook";
+        }
         return "redirect:/books";
     }
 
     @PostMapping("/books/update/{id}")
-    public String editBook(@PathVariable(name = "id") Long id, @ModelAttribute Book book) {
-        bookstoreService.updateBook(id, book);
+    public String editBook(@PathVariable(name = "id") Long id, @Valid Book book, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "updateBook";
+        }
+        try {
+            bookstoreService.updateBook(id, book);
+        } catch (DataIntegrityViolationException ex) {
+            bindingResult.addError(new ObjectError("title", "Combination of title and author must be unique."));
+            return "updateBook";
+        }
         return "redirect:/books";
     }
 
