@@ -13,10 +13,12 @@ import java.util.Optional;
 public class BookstoreService {
 
     private final BookRepository bookRepository;
+    private final PaymentService paymentService;
 
     @Autowired
-    public BookstoreService(BookRepository bookRepository) {
+    public BookstoreService(BookRepository bookRepository, PaymentService paymentService) {
         this.bookRepository = bookRepository;
+        this.paymentService = paymentService;
     }
 
     public Book addBook(Book book) {
@@ -34,6 +36,15 @@ public class BookstoreService {
             return bookRepository.save(b);
         }
         return null;
+    }
+
+    public void buyBookById(Long id) {
+        Optional<Book> optionalBook = bookRepository.findById(id);
+        if (optionalBook.isPresent()) {
+            paymentService.pay(optionalBook.get().getPrice());
+        } else {
+            System.out.println("Book not Found");
+        }
     }
 
     public Book getBookByTitle(String title) {

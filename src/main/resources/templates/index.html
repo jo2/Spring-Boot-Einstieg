@@ -25,6 +25,9 @@
             <td th:text="${book.price}"></td>
             <td>
                 <a class="btn btn-info" th:href="@{'/books/' + ${book.id} + '/edit'}">Edit</a>
+                <form th:action="@{'/books/' + ${book.id} + '/buy'}" method="post" style="display: inline;">
+                    <button class="btn btn-success" type="submit">Buy</button>
+                </form>
             </td>
         </tr>
         </tbody>

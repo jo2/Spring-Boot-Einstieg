@@ -78,6 +78,12 @@ public class ViewController {
         return "redirect:/books";
     }
 
+    @PostMapping("/books/{id}/buy")
+    public String buyBook(@PathVariable(name = "id") Long id) {
+        bookstoreService.buyBookById(id);
+        return "redirect:/books";
+    }
+
     @DeleteMapping("/books/delete/{id}")
     public String deleteBook(@PathVariable(name = "id") Long id) {
         bookstoreService.removeBook(id);
