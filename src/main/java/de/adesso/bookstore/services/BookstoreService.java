@@ -31,7 +31,7 @@ public class BookstoreService {
         System.out.println("Get Book Book_2");
         System.out.println(getBookByTitle("Book_2"));
 
-        updateBook(new Book("Book_2", "Author_3", 35.0, 2019));
+        updateBook("Book_2", new Book("Book_2", "Author_3", 35.0, 2019));
 
         System.out.println("Update Book Book_2");
         getAllBooks().forEach(System.out::println);
@@ -42,9 +42,9 @@ public class BookstoreService {
         return book;
     }
 
-    public Book updateBook(Book book) {
+    public Book updateBook(String title, Book book) {
         for (Book b : books) {
-            if (b.getTitle().equals(book.getTitle())) {
+            if (b.getTitle().equals(title)) {
                 b.setAuthor(book.getAuthor());
                 b.setPrice(book.getPrice());
                 b.setYear(book.getYear());
