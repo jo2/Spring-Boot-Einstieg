@@ -30,9 +30,14 @@ public class BookstoreController {
         return bookstoreService.getAllBooks();
     }
 
-    @GetMapping("/books/{title}")
+    @GetMapping("/books/title/{title}")
     public Book getBookByTitle(@PathVariable(name = "title") String title) {
         return bookstoreService.getBookByTitle(title);
+    }
+
+    @GetMapping("/books/{id}")
+    public Book getBookByTitle(@PathVariable(name = "id") Long id) {
+        return bookstoreService.findById(id);
     }
 
     @PostMapping("/books")
@@ -40,13 +45,13 @@ public class BookstoreController {
         return bookstoreService.addBook(book);
     }
 
-    @PutMapping("/books/{title}")
-    public Book updateBook(@PathVariable(name = "title") String title, @RequestBody Book book) {
-        return bookstoreService.updateBook(title, book);
+    @PutMapping("/books")
+    public Book updateBook(@RequestBody Book book) {
+        return bookstoreService.updateBook(book);
     }
 
-    @DeleteMapping("/books/{title}")
-    public void deleteBook(@PathVariable(name = "title") String title) {
-        bookstoreService.removeBook(title);
+    @DeleteMapping("/books/{id}")
+    public void deleteBook(@PathVariable(name = "id") Long id) {
+        bookstoreService.removeBook(id);
     }
 }

@@ -1,62 +1,44 @@
 package de.adesso.bookstore.services;
 
 import de.adesso.bookstore.entitites.Book;
+import de.adesso.bookstore.repositories.BookRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class BookstoreService {
 
-    private List<Book> books;
+    private final BookRepository bookRepository;
 
-    @PostConstruct
-    public void inti() {
-        books = new ArrayList<>();
-        addBook(new Book("Book_1", "Author_1", 5.0, 2018));
-        addBook(new Book("Book_2", "Author_1", 10.0, 2017));
-        addBook(new Book("Book_3", "Author_1", 15.0, 2018));
-        addBook(new Book("Book_4", "Author_2", 20.0, 2019));
+    @Autowired
+    public BookstoreService(BookRepository bookRepository) {
+        this.bookRepository = bookRepository;
     }
 
     public Book addBook(Book book) {
-        books.add(book);
-        return book;
+        return bookRepository.save(book);
     }
 
-    public Book updateBook(String title, Book book) {
-        for (Book b : books) {
-            if (b.getTitle().equals(title)) {
-                b.setAuthor(book.getAuthor());
-                b.setPrice(book.getPrice());
-                b.setYear(book.getYear());
-                return book;
-            }
-        }
-        return null;
+    public Book updateBook(Book book) {
+        return bookRepository.save(book);
     }
 
     public Book getBookByTitle(String title) {
-        for (Book b : books) {
-            if (b.getTitle().equals(title)) {
-                return b;
-            }
-        }
-        return null;
+        return bookRepository.findByTitle(title);
     }
 
-    public void removeBook(String title) {
-        for (Book b : new ArrayList<>(books)) {
-            if (b.getTitle().equals(title)) {
-                books.remove(b);
-                return;
-            }
-        }
+    public Book findById(Long id) {
+        return bookRepository.findById(id).orElse(null);
+    }
+
+    public void removeBook(Long id) {
+        bookRepository.deleteById(id);
     }
 
     public List<Book> getAllBooks() {
-        return books;
+        return (List<Book>) bookRepository.findAll();
     }
 }

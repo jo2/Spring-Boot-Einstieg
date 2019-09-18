@@ -1,6 +1,16 @@
 package de.adesso.bookstore.entitites;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+@Entity
 public class Book {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String title;
     private String author;
     private double price;
@@ -14,6 +24,10 @@ public class Book {
         this.author = author;
         this.price = price;
         this.year = year;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public String getTitle() {
@@ -51,7 +65,8 @@ public class Book {
     @Override
     public String toString() {
         return "Book{" +
-                "title='" + title + '\'' +
+                "id='" + id + '\'' +
+                ", title='" + title + '\'' +
                 ", author='" + author + '\'' +
                 ", price=" + price +
                 ", year=" + year +
