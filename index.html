@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Book store</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="jumbotron">
+    <h2 class="container">Book store</h2>
+</div>
+
+<div class="container">
+    <div id="error" style="display: none;" class="alert alert-danger"></div>
+    <div id="success" style="display: none;" class="alert alert-success"></div>
+
+    <div>
+        <div class="form-group">
+            <label for="titleInput">Title</label>
+            <input type="text" class="form-control" id="titleInput" placeholder="Enter title">
+        </div>
+
+        <div class="form-group">
+            <label for="authorInput">Author</label>
+            <input type="text" class="form-control" id="authorInput" placeholder="Password">
+        </div>
+
+        <div class="form-group">
+            <label for="priceInput">Price</label>
+            <input type="text" class="form-control" id="priceInput" placeholder="Price">
+        </div>
+
+        <div class="form-group">
+            <label for="yearInput">Year</label>
+            <input type="text" class="form-control" id="yearInput" placeholder="Year">
+        </div>
+
+        <button type="submit" class="btn btn-primary" id="submitBook">Submit</button>
+    </div>
+</div>
+
+<div class="container">
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Title</th>
+            <th scope="col">Author</th>
+            <th scope="col">Price</th>
+            <th scope="col">Year</th>
+        </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+    </table>
+</div>
+
+<script>
+    // load data initially
+    loadData();
+
+    // listen on click events on submit book button
+    document.getElementById('submitBook').addEventListener('click', () => {
+      // get values from input fields
+      const title = document.getElementById('titleInput').value;
+      const author = document.getElementById('authorInput').value;
+      const price = document.getElementById('priceInput').value;
+      const year = document.getElementById('yearInput').value;
+
+      // add book in backend, parse object to string to not send [object Object]
+      fetch('http://localhost:8080/api/books', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          title: title,
+          author: author,
+          price: price,
+          year: year
+        })
+      })
+        .then(response => response.json())
+        .then(data => {
+          if (data.error) {
+            // if there was an error
+            // display error message in error panel
+            document.getElementById('error').innerHTML = data.message;
+            document.getElementById('error').style.display = 'block';
+            // hide success panel
+            document.getElementById('success').innerHTML = '';
+            document.getElementById('success').style.display = 'none';
+          } else {
+            // if book was added successfully
+            // hide error panel
+            document.getElementById('error').innerHTML = '';
+            document.getElementById('error').style.display = 'none';
+            // display added book in success panel
+            document.getElementById('success').innerHTML = `Book with title ${title} added to inventory.`;
+            document.getElementById('success').style.display = 'block';
+            loadData();
+          }
+        });
+    });
+
+    // load data from backend
+    function loadData() {
+      fetch('http://localhost:8080/api/books')
+        .then(response => response.json()) // aggregate stream to json object
+        .then(data => {
+          // create html table string
+          const tableString = data.map((book, index) => '<tr>' +
+            `<td>${index}</td>` +
+            `<td>${book.title}</td>` +
+            `<td>${book.author}</td>` +
+            `<td>${book.price}</td>` +
+            `<td>${book.year}</td>` +
+            `<td><button class="btn btn-danger" onclick='deleteBook(${JSON.stringify(book)})'>Delete</button></td>` +
+            '</tr>')
+            .join('');
+
+          // set table body inner html to table string
+          document.getElementById('tbody').innerHTML = tableString;
+        });
+    }
+
+    // delete book in backend
+    function deleteBook(book) {
+      fetch(`http://localhost:8080/api/books/${book.id}`, {
+        method: 'DELETE'
+      })
+        .then((data) => {
+          if (!data.error) {
+            // if delete was successful
+            // hide error panel
+            document.getElementById('error').innerHTML = '';
+            document.getElementById('error').style.display = 'none';
+            // display deleted book in success panel
+            document.getElementById('success').innerHTML = `Book with title ${book.title} removed from inventory.`;
+            document.getElementById('success').style.display = 'block';
+            loadData();
+          } else {
+            // if there was an error
+            // display error message in error panel
+            document.getElementById('error').innerHTML = data.message;
+            document.getElementById('error').style.display = 'block';
+            // hide success panel
+            document.getElementById('success').innerHTML = '';
+            document.getElementById('success').style.display = 'none';
+          }
+        });
+    }
+
+</script>
+</body>
+</html>
