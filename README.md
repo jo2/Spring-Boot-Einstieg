@@ -1,29 +1,35 @@
-# Spring Boot Einstieg
+# Spring-Boot-Einstieg
 Dieser Artikel soll den Einstieg in Spring Boot vereinfachen.
 Im Rahmen dieses Artikels wird anhand eines Bookstore-Projekts grob gezeigt, wie Spring Boot funktioniert und wie mit Spring Boot ein kleines Projekt aufgebaut werden kann.
-In diesem Artikels werden verschiedene Tutorials verlinkt.
+In diesem Artikel werden verschiedene Tutorials verlinkt.
 Grundkenntnisse zu den in den Tutorials vermittelten Themen werden für die jeweils nachfolgenden Schritte vorausgesetzt, es empfiehlt sich also, diese Tutorials durchzuarbeiten.
 Grundlegend werden einige Vorkenntnisse vorausgesetzt. Dazu gehören objektorientierte Programmierung mit Java, relationale Datenbanken und SQL und REST.
 
-* Task 1: Spring Boot Projekt erstellen
+> **WICHTIG!!**: 
+  Dieses Repository ist bereits etwas älter, daher sind die verwendeten Versionen (Java, Spring Boot, etc.) veraltet.
+  Ziel dieses Repository ist es, eine Schritt-für-Schritt-Anleitung anhand der Commits abzubilden, und nicht, immer die aktuellsten Versionen zu beinhalten.
+  Beim Bearbeiten dieses Artikels sollten immer möglichst aktuelle Versionen verwendet werden.
+
+* [Task 1: Spring Boot Projekt erstellen](#task-1-spring-boot-projekt-erstellen)
   * Über Intelli-J
   * Web-Variante
   * Start der Anwendung
-* Task 2: Erstellen der Fachlogik
+* [Task 2: Erstellen der Fachlogik](#task-2-erstellen-der-fachlogik)
   * Entities
   * Services
   * Spring Boots ApplicationContext
-* Task 3: REST
-* Task 4: Datenbanken und Persistenz
+* [Task 3: REST](#task-3-rest)
+* [Task 4: Datenbanken und Persistenz](#task-4-datenbanken-und-persistenz)
   * Datenbank & neue Dependencies
   * Spring Boot Data JPA
   * Einblick in die Datenbank
   * Persistenz
-* Task 5: Frontend
+* [Task 5: Frontend](#task-5-frontend)
   * Tutorials
   * Aufgaben
-* Task 6: Form Validation
-* Task 7: Spring Profiles einsetzen
+* [Task 6: Form Validation](#task-6-form-validation)
+* [Task 7: Spring Profiles einsetzen](#task-7-spring-profiles-einsetzen)
+* [Task 8: Dockerize](#task-8-dockerize)
 
 Ein Git-Repository mit einer Beispiellösung findet sich hier. Die Lösung der einzelnen Tasks kann dabei den entsprechenden Commits entnommen werden. Diese Lösung dient nicht dazu, einfach kopiert zu werden. Sinn der Einarbeitung ist, den Umgang mit Spring Boot und nicht den Umgang mit Copy & Paste zu lernen.
 
@@ -49,7 +55,8 @@ Alternativ zum Spring Initializr kann über [https://start.spring.io/](https://s
 Das Projekt kann dann im Fall der Web-Variante heruntergeladen werden oder bei IntelliJ direkt als Projekt geöffnet werden.
 
 ### Start der Anwendung
-Zum Starten der Anwendung wird Gradle verwendet: `gradlew bootRun`. In Intelli-J kann die Anwendung auch vom Gradle-Fenster über de.adesso.bookstore -> Tasks -> application -> bootRun ausgeführt werden.
+Zum Starten der Anwendung wird Gradle verwendet: `gradlew bootRun`.
+In Intelli-J kann die Anwendung auch vom Gradle-Fenster über `de.adesso.bookstore` -> Tasks -> application -> bootRun ausgeführt werden.
 
 ## Task 2: Erstellen der Fachlogik
 ### Entities
@@ -113,7 +120,7 @@ Dies geschieht über die Annotation `@Autowired`, mehr dazu in der [Spring Dokum
 Das Injizieren geschieht mittels Construktor Injection und nicht mittels Property Injection, die Gründe und Vorgehensweise dazu können [hier](https://odrotbohm.de/2013/11/why-field-injection-is-evil/) nachgelesen werden.
 Um die Funktionalität der REST-Schnittstellen zu testen können Programme wie [Postman](https://www.postman.com/downloads/) oder [Insomnia](https://insomnia.rest/download) verwendet werden.
 
-Eure Projekt Struktur sollte bisher in etwa so aussehen:
+Eure Projektstruktur sollte bisher in etwa so aussehen:
 
 ![image](https://user-images.githubusercontent.com/7516893/135058453-83b62bb8-a9ae-435a-aab1-9bebe9953fe3.png)
 
@@ -137,7 +144,7 @@ Die neuen Abhängigkeiten müssen zunächst noch reingeladen werden, dafür soll
 
 ### Spring Boot Data JPA
 Ein Tutorial zur Verwendung von Spring Boot Data JPA findet sich [hier](https://spring.io/guides/gs/accessing-data-jpa/).
-Die Informationen aus diesem Tutorial müssen als nächstes auf dieses Projekt angewendet werden:
+Die Informationen aus diesem Tutorial müssen als Nächstes auf dieses Projekt angewendet werden:
 
 Dazu muss die Klasse `Book` angepasst und das Interface `BookstoreRepository` im Package `repositories` hinzugefügt werden.
 Da das Attribut id der Klasse `Book` eindeutig ist, sollen sämtliche Zugriffe, die ein eindeutiges Attribut voraussetzen, diese id verwenden.
@@ -221,18 +228,18 @@ Folgende Aspekte sollen validiert werden:
 * Der Titel muss mindestens 2 und maximal 30 Zeichen lang sein
 * Der Name des Autors muss mindestens 2 und maximal 20 Zeichen lang sein.
 * Das Erscheinungsjahr soll nach 1000 n. Chr. und vor 2019 n. Chr. liegen.
-* Der Preis muss mindestens 1€ betragen.
+* Der Preis muss mindestens 1 € betragen.
 * Die Kombination aus Titel und Autor soll einmalig sein. 
 
 Wenn die Eingaben valide wahren, soll auf die Übersichtsseite weitergeleitet werden, waren die Eingaben ungültig, soll dies auf der Seite mit entsprechenden Meldungen an den Inputfeldern und am Anfang des Formulars gemeldet werden.
 
 ## Task 7: Spring Profiles einsetzen
-Als nächstes wird das Interface `PaymentService` erstellt.
+Als Nächstes wird das Interface `PaymentService` erstellt.
 Dies enthält eine Methode `pay(double amount)`.
 Die Methode `pay()` soll einen Bezahlvorgang durch eine Konsolenausgabe simulieren.
 Die Klassen `PaypalPayment` und `DummyPayment` sind Beans und implementieren jeweils dieses Interface.
 Es wird sowohl der Betrag, als auch der Name der Klasse, deren `pay()`-Methode ausgeführt wird, ausgegeben.
-Im `BookstoreService` wird eine Methode `buyBookById(Long id)` erstellt die die `pay()`-Methode des `PaymentService` aufruft.
+Im `BookstoreService` wird eine Methode `buyBookById(Long id)` erstellt, die die `pay()`-Methode des `PaymentService` aufruft.
 Entsprechend muss ein `PaymentService` injiziert werden.
 Welche Implementierung des `PaymentService` verwendet wird, soll per Systemparameter in Gradle übergeben werden.
 Dazu wird die Datei `build.gradle` wie folgt ergänzt:
@@ -246,3 +253,89 @@ bootRun {
 
 Ein Tutorial dazu findet sich [hier](https://www.baeldung.com/spring-profiles).
 Ebenfalls wird im Frontend ein Button für das Kaufen eines Buchs angelegt. 
+
+## Task 8: Dockerize
+Als Nächstes wird [Docker](https://www.docker.com/) verwendet, um die einzelnen Anwendungsbestandteile separat voneinander zu starten.
+Für dieses Kapitel werden Grundkenntnisse im Umgang mit Docker vorausgesetzt, ein Einstieg in Docker liegt nicht im Scope dieses Artikels.
+
+Als Erstes wird eine Datei `Dockerfile` erstellt.
+Diese Datei dient dazu, mit Docker ein Image zu erstellen, das genutzt werden kann, um einen Container zu starten, der die Spring-Anwendung hochfährt.
+
+Als Basis wird ein Alpine-Linux mit OpenJDK-8 verwendet.
+In dieses Image wird das generierte JAR aus dem Ordner `./build/libs/` kopiert.
+Der Einfachheit halber kann es beim Kopieren in `app.jar` umbenannt werden.
+Als Einstieg wird dann der Befehl `java -jar /app.jar` verwendet.
+
+Mit dem Dockerfile könnte jetzt schon die Spring-Boot-Anwendung gestartet werden.
+Es wird dabei weiterhin die In-Memory-Datenbank H2 verwendet.
+
+Als Nächstes wird diese Datenbank auf eine [MariaDB](https://mariadb.org/) umgestellt.
+Allerdings wird die Datenbank nicht auf dem lokalen System installiert, sondern über einen Docker Container bereitgestellt, dazu aber später mehr.
+Dazu wird in der Datei `build.gradle` die Dependency von H2 entfernt und stattdessen folgende Dependency eingefügt:
+
+```groovy
+implementation 'org.mariadb.jdbc:mariadb-java-client:3.0.6'
+```
+
+Danach müssen noch die Konfigurationen in der Datei `application.properties` angepasst werden.
+Hier bleiben folgende Konfigurationen erhalten:
+
+```properties
+spring.datasource.driver-class-name=org.mariadb.jdbc.Driver
+spring.jpa.database-platform=org.hibernate.dialect.MariaDB102Dialect
+spring.jpa.hibernate.ddl-auto=update
+```
+
+Der Driver und der Hibernate-Dialekt wurden hier auf MariaDB umgestellt.
+Damit die Daten nicht immer erneut angelegt werden müssen, wird `ddl-auto` auf `update` gestellt.
+
+Damit die MariaDB nicht lokal installiert werden muss, wird nun ein entsprechender Docker Container angelegt.
+Damit auch die Docker Container nicht immer manuell gestartet werden müssen, wird zur Verwaltung der Container [Docker Compose](https://docs.docker.com/compose/) verwendet.
+Entsprechend wird nun die Datei `docker-compose.yml` erstellt, in die die Container eingetragen werden.
+
+Der erste Container, der über die `docker-compose.yml` verwaltet wird, ist der Container der Spring-Anwendung.
+Dieser muss jedes Mal neu gebaut werden.
+Als Kontext wird über `.` der aktuelle Ordner angegeben.
+Dadurch sucht Docker Compose im aktuellen Ordner nach einem `Dockerfile`.
+Heißt die Datei nicht `Dockerfile`, kann über den Parameter `dockerfile` der Name des Dockerfile angegeben werden.
+Damit der Container bei einem Absturz automatisch erneut gestartet wird, wird der Parameter `restart` auf `on-failure` gesetzt.
+Ein solcher Absturz kann beispielsweise auftreten, wenn die Datenbank, nicht verfügbar ist.
+Dies kann beim ersten Starten der Fall sein, da die Datenbank ein paar Sekunden zum Hochfahren benötigt.
+Zusätzlich muss dem Container mitgegeben werden, dass er allen Traffic, der am Port `8080` des Containers ankommt, nach innen weiterleiten soll.
+Als Letztes werden für diesen Container noch einige Umgebungsvariablen definiert.
+Hierbei ist die Benennung der Variablen wichtig, da Spring direkt die Werte aus diesen Umgebungsvariablen in der Konfiguration verwenden kann.
+Folgende Variablen werden konfiguriert:
+
+* `SPRING_DATASOURCE_URL`: Die URL, unter der die Datenbank erreicht wird.
+  Als Wert wird hier `jdbc:mariadb://db:3306/bookstore` eingetragen.
+  `db` entspricht dabei dem Namen des Datenbankeintrags in der `docker-compose.yml`.
+  Dadurch kann automatisch der entsprechende Container angesprochen werden.
+  Wird stattdessen `localhost` angegeben, referenziert das den `localhost`-Eintrag des Container der Spring-Anwendung.
+  Über diesen Eintrag kann natürlich keine Datenbank erreicht werden, weil die Datenbank nicht im selben Container läuft, wie die Spring-Anwendung.
+* `SPRING_DATASOURCE_USERNAME`: Der Nutzername des Datenbanknutzers, der für den Login benötigt wird.
+  Für dieses Testprojekt kann der Nutzer `root` verwendet werden, auf einer produktiven Datenbank sollte hier ein Nutzer verwendet werden, der nur die notwendigen Berechtigungen hat.
+* `SPRING_DATASOURCE_PASSWORD`: Das Passwort des Datenbanknutzers, das für den Login benötigt wird.
+  Dieses Passwort wird im Anschluss gesetzt.
+  In diesem Fall kann das Datenbankpasswort im Klartext in die Umgebungsvariable geschrieben werden.
+  Sollten Dritte allerdings Zugriff auf den Code oder die Datenbank haben, darf das Passwort nicht in Git auftauchen, stattdessen sollten diese Werte über Umgebungsvariablen gesetzt werden.
+* `SPRING_PROFILES_ACTIVE`: Das zu verwendende Spring-Profil (vgl. [Spring-Profiles](#task-7-spring-profiles-einsetzen)).
+
+Neben dem Spring-Backend wird auch noch ein Container für die Datenbank benötigt.
+Das Image kann vom zentralen Docker Hub bezogen werden.
+Dazu wird als Image `mariadb` angegeben, Docker lädt dann ein entsprechendes Image automatisch herunter, wenn es nicht bereits heruntergeladen wurde.
+Auch hier muss aller Traffic, der auf Port `3306` des Containers ankommt, nach innen weitergeleitet werden.
+Darüber hinaus müssen noch folgende Umgebungsvariablen gesetzt werden:
+
+* `MARIADB_ROOT_PASSWORD`: Das Root-Passwort der Datenbank.
+  Für diese Testdatenbank kann dieses Passwort direkt in der `docker-compose.yml` gesetzt werden.
+  Sollten Dritte allerdings Zugriff auf den Code oder die Datenbank haben, darf das Passwort nicht in Git auftauchen, stattdessen sollten diese Werte über Umgebungsvariablen gesetzt werden.
+  Das verwendete Passwort sollte in dem Fall auch aktuelle Sicherheitsrichtlinien für Passwörter erfüllen.
+* `MARIADB_DATABASE`: Dies ist der Name des Datenbankschemas, das beim initialen Starten der Datenbank erstellt wird.
+  Dieses Schema wird in der Umgebungsvariable `SPRING_DATASOURCE_URL` als letzter Teil der URL verwendet.
+
+Zu guter letzt kann noch ein Volume definiert werden, damit die Daten aus der Datenbank auch das Löschen des Datenbank-Containers überstehen.
+Der entsprechende Ordner im Docker Container ist `/var/lib/mysql`.
+Dieses Volume kann beispielsweise mit dem Ordner `data` im aktuellen Projekt verknüpft werden.
+Dieser Ordner sollte der `.gitignore` hinzugefügt werden, sodass er nicht versehentlich committed wird.
+
+Über das so erstellte `docker-compose.yml` können dann Datenbank und Backend gestartet werden, das Frontend ist, wie gewohnt, unter [localhost:8080](http://localhost:8080/) erreichbar.

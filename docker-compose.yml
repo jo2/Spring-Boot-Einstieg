@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  backend:
+    container_name: 'backend'
+    build:
+      context: .
+    restart: on-failure
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mariadb://db:3306/bookstore
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
+      - SPRING_PROFILES_ACTIVE=dummy
+    ports:
+      - 8080:8080
+    depends_on:
+      - db
+
+  db:
+    container_name: 'db'
+    image: mariadb
+    ports:
+      - 3306:3306
+    restart: on-failure
+    environment:
+      - MARIADB_ROOT_PASSWORD=root
+      - MARIADB_DATABASE=bookstore
+    volumes:
+      - ./data:/var/lib/mysql
+
